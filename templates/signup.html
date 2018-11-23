@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+
+<script type="text/javascript">
+// Check password input
+  function check() {
+    var password = $('#password').val();
+    var confirm_password = $('#confirm-password').val();
+    if (password != confirm_password) {
+      $(':input[type="submit"]').prop('disabled', true);
+      $('.password-message').text('Passwords don\'t match.');
+    } else {
+      $(':input[type="submit"]').prop('disabled', false);
+      $('.password-message').text('');
+    }
+  };
+</script>
+
+{% if not is_user_logged_in %}
+<h3 class="h3-title">Sign Up:</h3>
+
+<div class="form-box">
+  <form action="{{ url_for('signup') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required>
+    </div>
+    <div class="form-group">
+      <input type="password" name="confirm-password" class="form-control" id="confirm-password" placeholder="Confirm password" onchange="check();" required>
+      <span class="password-message"></span>
+    </div>
+
+    <div class="save-and-back-buttons">
+      <button type="submit" class="btn">Save</button>
+      <a href="{{ url_for('login') }}" class="btn">Back</a>
+    </div>
+
+  </form>
+</div>
+{% else %}
+<div class="flash-message">YOU ARE ALREADY LOGGED IN.</div>
+<a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+{% endif %}
+
+{% endblock %}

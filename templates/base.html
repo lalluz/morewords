@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <title>MoreWords - {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+  </head>
+
+  <body>
+    <div id="header" class=" header">
+      <div class="container header-line">
+        <div>
+          <a href="{{ url_for('vocabulary') }}">
+            <h1 class="app-name">MoreWords</h1>
+            <h3 class="app-name-description">Add words whenever you want!</h3>
+          </a>
+        </div>
+        <div>
+          {% if not is_user_logged_in %}
+          <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+          {% else %}
+          <a href="{{ url_for('disconnect') }}" class="btn btn-login">Logout</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+
+    <div id="footer" class="footer text-center">
+      <span class="footer-text">Lalluz 2018</span>
+    </div>
+
+    <!-- TODO: check this integrity after change from slim to normal jquery version -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+  </body>
+
+</html>

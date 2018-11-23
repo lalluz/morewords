@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Edit language{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+{% if is_user_logged_in and is_user_authorized %}
+<h3 class="h3-title">Please edit "{{ to_edit.name|capitalize }}":</h3>
+
+<div class="form-box">
+  <form action="{{ url_for('language_edit', language_id=to_edit.id) }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+      <label for="name">Language:</label>
+      <input type="text" name="name" class="form-control" id="name" placeholder="{{ to_edit.name|capitalize }}" required>
+    </div>
+
+    <div class="save-and-back-buttons">
+      <button type="submit" class="btn">Save</button>
+      <a href="{{ url_for('language_list') }}" class="btn">Back</a>
+    </div>
+
+  </form>
+</div>
+{% endif %}
+
+{% endblock %}

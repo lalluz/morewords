@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Personal review{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+{% if is_user_logged_in and is_user_authorized %}
+<div class="language-in-word-detail text-center">{{ language.name|upper }}</div>
+
+{% if words.count() %}
+{% for word in words %}
+<div class="word-detail-box rounded">
+  <h3 class="h3-title word-title-in-detail">{{ word.name|capitalize }}</h3>
+
+  <div class=" h3-title word-detail-div">{{ word.translation|capitalize }}</div>
+
+  {% if word.notes %}
+  <div>Notes:</div>
+  <div class="notes-in-word-detail word-detail-div rounded">{{ word.notes|capitalize }}</div>
+  {% endif %}
+</div>
+{% endfor %}
+{% else %}
+<p class="flash-message">There are no words to review.</p>
+{% endif %}
+
+<div>
+  <a class="btn" href="{{ url_for('word_list', language_id=language.id) }}">Back</a>
+</div>
+{% endif %}
+
+{% endblock %}

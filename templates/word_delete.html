@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Delete word{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+{% if is_user_logged_in and is_user_authorized %}
+<h3 class="h3-title">Delete Word</h3>
+<p>Are you sure you want to delete "{{ to_delete.name|capitalize }}"?</p>
+
+<form action="{{ url_for('word_delete', language_id=to_delete.language_id, word_id=to_delete.id) }}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+  <div class="save-and-back-buttons">
+    <button type="submit" class="btn">Delete</button>
+    <a href="{{ url_for('word_list', language_id=to_delete.language_id) }}" class="btn">Back</a>
+  </div>
+
+</form>
+{% endif %}
+
+{% endblock %}

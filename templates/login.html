@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+{% if not is_user_logged_in %}
+<div id="result" class="flash-message"></div>
+
+<!-- MANUAL LOGIN -->
+<h3 class="h3-title">Sign in with your account:</h3>
+
+<div class="form-box">
+  <form action="{{ url_for('login') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required>
+    </div>
+
+    <div class="forgot-password"><a href="#">Forgot your password?</a></div><!-- TODO: feature to be implemented. -->
+
+    <div class="save-and-back-buttons">
+      <button type="submit" class="btn">Sign in</button>
+      <a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+    </div>
+
+  </form>
+</div>
+<!-- END MANUAL LOGIN -->
+
+<br>
+<h3 class="h3-title">Or sign in with one of these services:</h3>
+
+<div class="sign-in-buttons">
+  <!-- GOOGLE PLUS SIGN IN BUTTON-->
+  <div id="signinButton" class="google-button">
+    <span class="g-signin"
+      data-scope="openid email"
+      data-clientid="920749262814-3j2vremo5fvppet32k15o7acofn5h7r6.apps.googleusercontent.com"
+      data-redirecturi="postmessage"
+      data-accesstype="offline"
+      data-cookiepolicy="single_host_origin"
+      data-callback="signInCallback"
+      data-approvalprompt="force">
+    </span>
+  </div>
+  <!--END GOOGLE PLUS SIGN IN BUTTON -->
+  <!--FACEBOOK SIGN IN BUTTON -->
+  <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" size="large">
+    <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+  </fb:login-button>
+  <!--END FACEBOOK SIGN IN BUTTON -->
+</div>
+
+<br>
+<h3 class="h3-title">Or create your account:</h3>
+<!-- SIGNUP -->
+<h3 class="h3-title"><a href="{{ url_for('signup') }}" class="btn">Sign Up</a></h3>
+<!-- END SIGNUP -->
+{% else %}
+<div class="flash-message">YOU ARE ALREADY LOGGED IN.</div>
+<a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+{% endif %}
+
+<!--GOOGLE SIGN IN -->
+<script>
+function signInCallback(authResult) {
+  var csrf_token = "{{ csrf_token() }}";
+  if (authResult['code']) {
+    // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+    $.ajax({
+      type: 'POST',
+      beforeSend: function(request) {
+        request.setRequestHeader("X-CSRFToken", csrf_token);},
+      url: '/gconnect?state={{STATE}}',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          window.location.href = "/vocabulary";
+      } else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+    });
+  }
+}
+</script>
+<!--END GOOGLE SIGN IN -->
+
+<!--FACEBOOK SIGN IN -->
+<script>
+  var csrf_token = "{{ csrf_token() }}";
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '604490916649814',
+    cookie     : true,  // enable cookies to allow the server to access
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v3.2' // use version 3.2
+  });
+  };
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function sendTokenToServer() {
+    var access_token = FB.getAuthResponse()['accessToken'];
+    console.log(access_token)
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      $.ajax({
+        type: 'POST',
+        beforeSend: function(request) {
+          request.setRequestHeader("X-CSRFToken", csrf_token);},
+        url: '/fbconnect?state={{STATE}}',
+        processData: false,
+        data: access_token,
+        contentType: 'application/octet-stream; charset=utf-8',
+        success: function(result) {
+          // Handle or verify the server response if necessary.
+          if (result) {
+            window.location.href = "/vocabulary";
+        } else {
+          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+        }
+      }
+    });
+  });
+}
+</script>
+<!--END FACEBOOK SIGN IN -->
+
+{% endblock %}

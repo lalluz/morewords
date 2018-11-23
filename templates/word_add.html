@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Add word{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+<h3 class="h3-title">Create new word</h3>
+
+<div class="form-box">
+  <form action="{{ url_for('word_add') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+      <label for="language">Language:</label>
+      {% if not language %}
+      <select  name="language" class="form-control" id="language" required>
+        <option></option>
+        {% for language in languages %}
+        <option value="{{ language.id }}">{{ language.name|capitalize }}</option>
+        {% endfor %}
+      </select>
+      {% else %}
+      <input type="text" name="language" value="{{ language.name|capitalize }}" class="form-control" id="language" readonly>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="name">Word:</label>
+      <input type="text" name="name" class="form-control" id="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="translation">Translation:</label>
+      <input type="text" name="translation" class="form-control" id="translation" required>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes:</label>
+      <textarea name="notes" class="form-control" id="notes"></textarea>
+    </div>
+
+    <div class="save-and-back-buttons">
+      <button type="submit" class="btn">Save</button>
+      {% if is_user_logged_in %}
+      {% if not language %}
+      <a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+      {% else %}
+      <a href="{{ url_for('word_list', language_id=language.id) }}" class="btn">Back</a>
+      {% endif %}
+      {% endif %}
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

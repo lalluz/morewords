@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ language.name|capitalize }} words{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+<div class="words-box rounded">
+  <div class="title-line">
+    <h3 class="h3-box-title">{{ language.name|capitalize }} Words ({{ words|length }})</h3>
+    {% if is_user_logged_in %}
+    <a href="{{ url_for('word_add', language_id=language.id) }}" title="Add a word">
+      <i class="material-icons btn">add</i>
+    </a>
+    {% endif %}
+  </div>
+
+  {% if words|length %}
+  {% for word in words %}
+  <a href="{{ url_for('word_detail', word_id=word.id, language_id=language.id) }}">
+    <div class="word-edit-delete-line">
+
+      <div class="word">
+        <span class="word-name">{{ word.name|capitalize }}</span>, {{ word.translation|capitalize }}
+      </div>
+
+      {% if is_user_logged_in %}
+      {% if user.id == word.user_id %}
+      <div class="edit-delete-buttons">
+        <a href="{{ url_for('word_edit', language_id=language.id, word_id=word.id) }}">Edit</a>
+        <span class="pipe"> | </span>
+        <a href="{{ url_for('word_delete', language_id=language.id, word_id=word.id) }}">Delete</a>
+      </div>
+      {% endif %}
+      {% endif %}
+
+    </div>
+  </a>
+  {% endfor %}
+  {% else %}
+  <p>There are no words yet, add one!</p>
+  {% endif %}
+</div>
+
+<div class="back-button">
+  {% if user and is_user_logged_in %}
+  <a href="{{ url_for('personal_review', user_id=user.id, language_id=language.id) }}" class="btn"><span>Review</span></a>
+  {% endif %}
+  <a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+</div>
+
+{% endblock %}

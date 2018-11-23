@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ word.name|capitalize }}{% endblock %}
+{% block content %}
+
+<div class="language-in-word-detail text-center">{{ word.language.name|upper }}</div>
+
+{% include 'flash_messages_snippet.html' %}
+
+<div class="word-detail-box rounded">
+  <h3 class="h3-title word-title-in-detail">{{ word.name|capitalize }}</h3>
+
+  <div class=" h3-title word-detail-div">{{ word.translation|capitalize }}</div>
+
+  {% if word.notes %}
+  <div>Notes:</div>
+  <div class="notes-in-word-detail word-detail-div rounded">{{ word.notes|capitalize }}</div>
+  {% endif %}
+
+  {% if user.id == word.user_id %}
+  <div class="word-detail-div">
+    {% if word.is_learned %}
+    <span>Learned!</span>
+    {% else %}
+    <div class="title-line">
+      <span>Study it!</span>
+      {% if is_user_logged_in %}
+      {% if user.id == word.user_id %}
+      <a href="{{ url_for('personal_review', user_id=word.user_id, language_id=word.language_id) }}"><span>Go to review</span></a>
+      {% endif %}
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<div class="title-line">
+  {% if is_user_logged_in and user.id == word.user_id %}
+  <div class="edit-delete-buttons">
+    <a class="btn" href="{{ url_for('word_edit', language_id=word.language_id, word_id=word.id) }}">Edit</a>
+    <a class="btn" href="{{ url_for('word_delete', language_id=word.language_id, word_id=word.id) }}">Delete</a>
+  </div>
+  {% endif %}
+
+  <div>
+    <a class="btn" href="{{ url_for('word_list', language_id=word.language_id) }}">Back</a>
+  </div>
+</div>
+
+{% endblock %}

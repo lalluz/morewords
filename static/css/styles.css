@@ -1,0 +1,234 @@
+/*
+ * COLORS
+ *
+ * Dark gray      #424242
+ * Orange         #ff9800
+ * Dark orange    #e65100
+ * Hover color    #fff3e0
+ */
+
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  position: relative; /* for footer */
+  min-height: 100%; /* for footer */
+}
+
+a {
+  color: #424242;
+}
+
+a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+body {
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  max-width: 100%;
+  margin-bottom: 80px; /* for footer */
+}
+
+.app-name-description {
+  font-size: 1.4em;
+}
+
+.back-button {
+  margin-top: 8px;
+}
+
+.btn {
+  background-color: #fff;
+  border: 1px solid #ff9800;
+}
+
+.btn:hover {
+  color: #ff9800;
+}
+
+.btn > a:hover {
+  color: #000;
+}
+
+.btn-login {
+  border:  1px solid #000;
+  margin: 8px 0;
+}
+
+.btn-login:hover {
+  border: 1px solid #ff9800;
+  background-color: #fff3e0;
+}
+
+.container {
+    margin: auto;
+}
+
+.flash-message {
+  color: #e65100;
+  list-style-type: none;
+  margin: 8px 0 4px 0;
+  padding: 8px 0;
+  font-size: 1.2em;
+}
+
+.forgot-password {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+/* FOOTER - Sticky footer styles */
+.footer {
+  width: 100%;
+  position: absolute; /* to body */
+  bottom: 0px;
+  left: 0px;
+  height: auto;
+  padding: 4px;
+  background-color: #ff9800;
+}
+
+.footer-text {
+  font-size: 0.8em;
+}
+
+.h3-box-title {
+  font-size: 1.4em;
+  margin-bottom: 0;
+}
+
+.h3-title {
+  font-size: 1.4em;
+  margin: 16px 0;
+}
+
+.header {
+  background-color: #ff9800;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.header > a {
+  color: #424242;
+}
+
+.header-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.is_learned-checkbox {
+  margin-bottom: 8px;
+}
+
+.languages-box,
+.latest-words-box,
+.words-box,
+.word-detail-box {
+  border: 1px solid #ff9800;
+  margin-top: 16px;
+  padding: 8px;
+}
+
+.language-edit-delete-line,
+.word-edit-delete-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.language-in-word-detail {
+  color: #ff9800;
+  font-size: 1.2em;
+  padding-top: 16px;
+}
+
+.language-list-box,
+.latest-word-list-box {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 4px;
+}
+
+.language-list-box:hover,
+.latest-word-list-box:hover {
+  background-color: #fff3e0;
+}
+
+.notes-in-word-detail {
+  border: 1px solid #bdbdbd;
+  padding: 4px 8px 8px 8px;
+}
+
+.password-message {
+  color: #e65100;
+  margin-bottom: 16px;
+}
+
+.pipe {
+  color: #ff9800;
+}
+
+.title-line {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.username {
+  margin-left: 20px;
+}
+
+.word-detail-box {
+  margin-bottom: 8px;
+}
+
+.word-detail-div {
+  margin-bottom: 24px;
+}
+
+.word-edit-delete-line:hover {
+  background-color: #fff3e0;
+}
+
+.word-name {
+  font-weight: bold;
+}
+
+.word-title-in-detail {
+  font-weight: bold;
+}
+
+/*
+ * MEDIA QUERIES
+ */
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .container {
+    width: 70%;
+  }
+  .sign-in-buttons {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .vocabulary-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .languages-box,
+  .latest-words-box {
+    width: 49%;
+  }
+}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Add language{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+<h3 class="h3-title">Create new language</h3>
+
+<div class="form-box">
+  <form action="{{ url_for('language_add') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+      <label for="name">Language:</label>
+      <input type="text" name="name" class="form-control" id="name" placeholder="Enter language" required>
+    </div>
+
+    <div class="save-and-back-buttons">
+      {% if is_user_logged_in %}
+      <button type="submit" class="btn">Save</button>
+      {% endif %}
+      <a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

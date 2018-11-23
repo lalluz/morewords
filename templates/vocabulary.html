@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Vocabulary{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+<div class="vocabulary-container">
+  <div class="languages-box rounded">
+
+    <div class="title-line">
+      <h3 class="h3-box-title">Languages</h3>
+      {% if is_user_logged_in %}
+      <div>
+        <a href="{{ url_for('language_add') }}" title="Add a language">
+          <i class="material-icons btn">add</i>
+        </a>
+        <a href="{{ url_for('language_list') }}" title="Manage languages">
+          <i class="material-icons btn">settings</i>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if languages|length %}
+    {% for language in languages %}
+    <a href="{{ url_for('word_list', language_id=language.id) }}">
+      <div class="language-list-box">
+        <div>
+          {{ language.name|capitalize }}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+    {% else %}
+    <p>There are no languages yet!</p>
+    {% endif %}
+
+  </div>
+
+  <div class="latest-words-box rounded">
+    <div class="title-line">
+      <h3 class="h3-box-title">Latest words</h3>
+      {% if is_user_logged_in %}
+      <a href="{{ url_for('word_add') }}" title="Add a word">
+        <i class="material-icons btn">add</i>
+      </a>
+      {% endif %}
+    </div>
+
+    {% if latest_words.count() %}
+    {% for word in latest_words %}
+    <a href="{{ url_for('word_detail', word_id=word.id, language_id=word.language_id) }}">
+      <div class="latest-word-list-box">
+        <div>
+          {{ word.name|capitalize }}
+        </div>
+        <div>
+          {{ word.language.name|capitalize }}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+    {% else %}
+    <p>There are no words yet!</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

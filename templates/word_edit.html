@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Edit word{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+{% if is_user_logged_in and is_user_authorized %}
+<div class="language-in-word-detail text-center">{{ to_edit.language.name|upper }}</div>
+
+<h3 class="h3-title">Please edit "{{ to_edit.name|capitalize }}":</h3>
+
+<div class="form-box">
+  <form action="{{ url_for('word_edit', language_id=to_edit.language.id, word_id=to_edit.id) }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="form-group">
+      <label for="name">Word:</label>
+      <input type="text" name="name" class="form-control" id="name" value="{{ to_edit.name|capitalize }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="translation">Translation:</label>
+      <input type="text" name="translation" class="form-control" id="translation" value="{{ to_edit.translation|capitalize }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes:</label>
+      <textarea name="notes" class="form-control" id="notes">{{ to_edit.notes|capitalize }}</textarea>
+    </div>
+
+    <div class="form-check is_learned-checkbox">
+      <input type="checkbox" name="is_learned" class="form-check-input" id="is_learned" {% if to_edit.is_learned %}checked{% endif %}>
+      <label for="is_learned">Learned</label>
+    </div>
+
+    <div class="save-and-back-buttons">
+      <button type="submit" class="btn">Save</button>
+      <a href="{{ url_for('word_list', language_id=language.id) }}" class="btn">Back</a>
+    </div>
+
+  </form>
+</div>
+{% endif %}
+
+{% endblock %}

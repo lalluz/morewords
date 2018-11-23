@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Languages{% endblock %}
+{% block content %}
+
+{% include 'flash_messages_snippet.html' %}
+
+<div class="languages-box rounded">
+  <div class="title-line">
+    <h3 class="h3-box-title">Manage Languages</h3>
+    {% if is_user_logged_in %}
+    <a href="{{ url_for('language_add') }}" title="Add a language">
+      <i class="material-icons btn">add</i>
+    </a>
+    {% endif %}
+  </div>
+
+  {% if languages|length %}
+  {% for language in languages %}
+  <div class="language-edit-delete-line">
+
+    <div class="language-name">
+      {{ language.name|capitalize }}
+    </div>
+
+    {% if is_user_logged_in and user.id == language.user_id %}
+    <div class="edit-delete-buttons">
+      <a href="{{ url_for('language_edit', language_id=language.id) }}">Edit</a>
+      <span class="pipe"> | </span>
+      <a href="{{ url_for('language_delete', language_id=language.id) }}">Delete</a>
+    </div>
+    {% endif %}
+
+  </div>
+  {% endfor %}
+  {% else %}
+  <p>There are no languages yet, add one!</p>
+  {% endif %}
+</div>
+
+<div class="back-button">
+  <a href="{{ url_for('vocabulary') }}" class="btn">Back</a>
+</div>
+
+{% endblock %}
