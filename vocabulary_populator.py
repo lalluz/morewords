@@ -15,16 +15,16 @@ session = DBSession()
 
 # Add Users
 def add_users():
-    user_1 = User(username="user_1", email="user_one@mail.com")
-    user_1.hash_password("password")
+    user_1 = User(username="user_1", email="user_1@example.com")
+    user_1.hash_password("password_1")
     session.add(user_1)
 
-    user_2 = User(username="user_2", email="user_two@mail.com")
-    user_2.hash_password("password")
+    user_2 = User(username="user_2", email="user_2@example.com")
+    user_2.hash_password("password_2")
     session.add(user_2)
 
-    user_3 = User(username="user_3", email="user_three@mail.com")
-    user_3.hash_password("password")
+    user_3 = User(username="user_3", email="user_3@example.com")
+    user_3.hash_password("password_3")
     session.add(user_3)
 
     session.commit()
