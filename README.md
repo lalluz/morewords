@@ -13,6 +13,7 @@ This app also has an API that lets developers query the database. See [MoreWords
 
 This project contains:  
 * A database_setup.py file with the model classes to set up the database.  
+* A vocabulary_populator.py file to populate the database with a few users, languages and words.
 * A morewords.py file with all views and json endpoints.  
 * A /templates directory with all templates.  
 * A /static directory containing a css directory with the css stylesheet.  
@@ -49,8 +50,8 @@ ENDPOINT URIs:
 * **/api/v0/languages** - List all languages.  
 * **/api/v0/words** - List all words.  
 * **/api/v0/languages/[language_name]/words** - List all words in a given language.  
-* **/api/v0/languages/[language_name]/words/[word_name]>** - List all entry for a given word in a given language.  
-* **/api/v0/words/[word_name]>** - List all entry for a given word in any language.  
+* **/api/v0/languages/[language_name]/words/[word_name]>** - List all entries for a given word in a given language.  
+* **/api/v0/words/[word_name]>** - List all entries for a given word in any language.  
 
 ## Licence
 MIT Licence.
