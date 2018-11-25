@@ -33,8 +33,7 @@ APPLICATION_NAME = "MoreWords"
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///morewords.db',
-                       connect_args={'check_same_thread': False},
-                       echo=True)
+                       connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
