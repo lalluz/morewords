@@ -104,7 +104,7 @@ function signInCallback(authResult) {
   var csrf_token = "{{ csrf_token() }}";
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '604490916649814',
+    appId      : '982868338564862',
     cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
@@ -116,7 +116,7 @@ function signInCallback(authResult) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
   // Here we run a very simple test of the Graph API after login is
