@@ -9,10 +9,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+
+    <!-- Get curent year -->
+    <script type="text/javascript">
+      $(function() {
+        var current_year_span = $('#current-year');
+        var current_year = (new Date()).getFullYear();
+        current_year_span.text(current_year);
+      });
+    </script>
+    <!-- END get current year -->
+
   </head>
 
   <body>
@@ -39,10 +51,9 @@
     </div>
 
     <div id="footer" class="footer text-center">
-      <span class="footer-text">Lalluz 2018</span>
+      <span class="footer-text">Lalluz <span id="current-year"></span></span>
     </div>
 
-    <!-- TODO: check this integrity after change from slim to normal jquery version -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
