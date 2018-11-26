@@ -45,6 +45,7 @@ csrf = CSRFProtect(app)
 @app.route('/')
 @app.route('/vocabulary/', methods=['GET'])
 def vocabulary():
+    """Return the main page with all languages and latest words."""
     languages = session.query(Language).order_by('name').all()
     latest_words = session.query(Word).order_by('id desc').limit(10)
     is_user_logged_in = True if 'username' in login_session else False
@@ -58,6 +59,7 @@ def vocabulary():
 
 @app.route('/vocabulary/languages', methods=['GET'])
 def language_list():
+    """Return the page to manage all languages."""
     languages = session.query(Language).order_by('name').all()
     is_user_logged_in = True if 'username' in login_session else False
     if is_user_logged_in:
@@ -74,6 +76,7 @@ def language_list():
 
 @app.route('/vocabulary/language/add/', methods=['GET', 'POST'])
 def language_add():
+    """Return the page to add a language."""
     is_user_logged_in = True if 'username' in login_session else False
     context = {'is_user_logged_in': is_user_logged_in}
 
@@ -100,6 +103,7 @@ def language_add():
 
 @app.route('/vocabulary/<int:language_id>/edit/', methods=['GET', 'POST'])
 def language_edit(language_id):
+    """Return the page to edit the given language."""
     to_edit = session.query(Language).filter_by(id=language_id).one()
     is_user_logged_in = True if 'username' in login_session else False
     if is_user_logged_in and to_edit.user_id == login_session['user_id']:
@@ -135,6 +139,7 @@ def language_edit(language_id):
 
 @app.route('/vocabulary/<int:language_id>/delete/', methods=['GET', 'POST'])
 def language_delete(language_id):
+    """Return the page to delete the given language."""
     to_delete = session.query(Language).filter_by(id=language_id).one()
     is_user_logged_in = True if 'username' in login_session else False
     if is_user_logged_in and to_delete.user_id == login_session['user_id']:
@@ -175,6 +180,7 @@ def language_delete(language_id):
 
 @app.route('/vocabulary/<int:language_id>/words/', methods=['GET'])
 def word_list(language_id):
+    """Return the page with all words in the given language."""
     language = session.query(Language).filter_by(id=language_id).one()
     words = (session.query(Word).filter_by(language_id=language_id).
              order_by('name').all())
@@ -194,6 +200,7 @@ def word_list(language_id):
 
 @app.route('/vocabulary/<int:language_id>/<int:word_id>/', methods=['GET'])
 def word_detail(language_id, word_id):
+    """Return the detail page of the given word."""
     word = session.query(Word).filter_by(id=word_id).one()
     is_user_logged_in = True if 'username' in login_session else False
     if is_user_logged_in:
@@ -210,6 +217,7 @@ def word_detail(language_id, word_id):
 
 @app.route('/vocabulary/word/add/', methods=['GET', 'POST'])
 def word_add(language_id=None):
+    """Return the page to add a word."""
     languages = session.query(Language).all()
     is_user_logged_in = True if 'username' in login_session else False
     if len(languages) == 0:
@@ -242,6 +250,7 @@ def word_add(language_id=None):
 @app.route('/vocabulary/<int:language_id>/<int:word_id>/edit/',
            methods=['GET', 'POST'])
 def word_edit(language_id, word_id):
+    """Return the page to edit the given word."""
     languages = session.query(Language).all()
     language = session.query(Language).filter_by(id=language_id).one()
     to_edit = session.query(Word).filter_by(id=word_id).one()
@@ -289,6 +298,7 @@ def word_edit(language_id, word_id):
 @app.route('/vocabulary/<int:language_id>/<int:word_id>/delete/',
            methods=['GET', 'POST'])
 def word_delete(language_id, word_id):
+    """Return the page to delete the given word."""
     language = session.query(Language).filter_by(id=language_id).one()
     to_delete = session.query(Word).filter_by(id=word_id).one()
     is_user_logged_in = True if 'username' in login_session else False
@@ -325,6 +335,7 @@ def word_delete(language_id, word_id):
 @app.route('/vocabulary/<int:language_id>/<int:user_id>/review',
            methods=['GET'])
 def personal_review(user_id, language_id):
+    """Return a page with all words with is_learned==False."""
     language = session.query(Language).filter_by(id=language_id).one()
     words = session.query(Word).filter_by(language_id=language_id,
                                           user_id=user_id,
@@ -348,6 +359,7 @@ def personal_review(user_id, language_id):
 # SIGNUP, LOGIN AND LOGOUT
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """Return the page to sign up without using Google or Facebook."""
     is_user_logged_in = True if 'username' in login_session else False
     context = {'is_user_logged_in': is_user_logged_in}
 
@@ -374,6 +386,7 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Return the page with all login options."""
     is_user_logged_in = True if 'username' in login_session else False
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
@@ -411,9 +424,9 @@ def login():
     return render_template('login.html', **context)
 
 
-# Google auth
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """Connect with Google OAuth service to login a Google user."""
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -504,9 +517,9 @@ def gconnect():
     return str(login_session)
 
 
-# Facebook auth
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
+    """Connect with Facebook OAuth service to login a Facebook user."""
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -535,6 +548,7 @@ def fbconnect():
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
+    # Get user data
     url = 'https://graph.facebook.com/v3.2/me?access_token=%s&fields=name,id,email' % token  # nopep8
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -553,7 +567,7 @@ def fbconnect():
 
     login_session['picture'] = data["data"]["url"]
 
-    # see if user exists, if not make a new one
+    # See if user exists, if not make a new one
     user_id = get_user_id(login_session['email'])
     if not user_id:
         user_id = create_user(login_session)
@@ -564,9 +578,9 @@ def fbconnect():
     return str(login_session)
 
 
-# Google disconnect
 @app.route('/gdisconnect')
 def gdisconnect():
+    """Disconnect a Google user."""
     # Only disconnect a connected user.
     access_token = login_session.get('access_token')
     if access_token is None:
@@ -597,6 +611,7 @@ def gdisconnect():
 # Facebook disconnect
 @app.route('/fbdisconnect')
 def fbdisconnect():
+    """Disconnect a Facebook user."""
     facebook_id = login_session['facebook_id']
     access_token = login_session['access_token']
     url = ('https://graph.facebook.com/%s/permissions?access_token=%s' %
@@ -607,9 +622,9 @@ def fbdisconnect():
     return
 
 
-# Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
+    """Disconnect users based on provider."""
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
@@ -636,6 +651,7 @@ def disconnect():
 # API Endpoint
 @app.route('/api/v0/vocabulary', methods=['GET'])
 def vocabulary_json():
+    """List all words grouped by language."""
     languages = session.query(Language).all()
     serialized_languages = [l.serialize for l in languages]
 
@@ -650,6 +666,7 @@ def vocabulary_json():
 
 @app.route('/api/v0/languages', methods=['GET'])
 def language_list_json():
+    """List all languages."""
     languages = session.query(Language).all()
 
     return jsonify(Languages=[l.serialize for l in languages])
@@ -657,6 +674,7 @@ def language_list_json():
 
 @app.route('/api/v0/words', methods=['GET'])
 def word_list_json():
+    """List all words."""
     words = session.query(Word).all()
 
     return jsonify(Words=[w.serialize for w in words])
@@ -664,6 +682,7 @@ def word_list_json():
 
 @app.route('/api/v0/languages/<string:language_name>/words', methods=['GET'])
 def language_word_list_json(language_name):
+    """List all words in the given language."""
     language = session.query(Language).filter_by(name=language_name).one()
     words = session.query(Word).filter_by(language_id=language.id)
 
@@ -673,6 +692,7 @@ def language_word_list_json(language_name):
 @app.route('/api/v0/languages/<string:language_name>/words/<string:word_name>',
            methods=['GET'])
 def language_word_json(language_name, word_name):
+    """List all entries for a given word in the given language."""
     language = session.query(Language).filter_by(name=language_name).one()
     word_query = session.query(Word).filter_by(language_id=language.id,
                                                name=word_name)
@@ -682,13 +702,14 @@ def language_word_json(language_name, word_name):
 
 @app.route('/api/v0/words/<string:word_name>', methods=['GET'])
 def word_json(word_name):
+    """List all entries for the given word in any language."""
     word_query = session.query(Word).filter_by(name=word_name)
 
     return jsonify(Word=[w.serialize for w in word_query])
 
 
-# User Helper Functions
 def create_user(login_session):
+    """Helper function that creates a user."""
     new_user = User(username=login_session['username'],
                     email=login_session['email'],
                     picture=login_session['picture'])
@@ -700,6 +721,7 @@ def create_user(login_session):
 
 
 def get_user_id(email):
+    """Helper function that retrieves a user id from the given email."""
     try:
         user = session.query(User).filter_by(email=email).one()
 
