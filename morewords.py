@@ -26,13 +26,8 @@ import json
 import requests
 
 
-CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "MoreWords"
-
 app = Flask(__name__)
 
-# TODO: modify port number!
 engine = create_engine('postgresql+psycopg2://vagrant:wlapaella@localhost:5432/morewords')
 Base.metadata.bind = engine
 
@@ -473,6 +468,8 @@ def gconnect():
         return response
 
     # Verify that the access token is valid for this app.
+    CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
     if result['issued_to'] != CLIENT_ID:
         response = (make_response(
                     json.dumps("Token's client ID does not match app's."),
