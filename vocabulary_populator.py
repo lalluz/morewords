@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from morewords import Base, User, Language, Word
 
 
-engine = create_engine('sqlite:///morewords.db')
+engine = create_engine('postgresql+psycopg2://vagrant:wlapaella@localhost:5432/morewords')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()

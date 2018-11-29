@@ -16,13 +16,15 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(32), unique=True, nullable=False)
-    password_hash = Column(String(64))
+    password_hash = Column(String(128))
     email = Column(String(250), index=True, unique=True, nullable=False)
     picture = Column(String(250))
 
     # Encrypt pw with SHA256
     def hash_password(self, password):
         self.password_hash = password_context.hash(password)
+
+        return
 
     # Check pws and return a boolean
     def verify_password(self, password):
@@ -75,6 +77,6 @@ class Word(Base):
         }
 
 
-engine = create_engine("sqlite:///morewords.db")
+engine = create_engine('postgresql+psycopg2://vagrant:wlapaella@localhost:5432/morewords')
 
 Base.metadata.create_all(engine)

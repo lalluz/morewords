@@ -32,8 +32,8 @@ APPLICATION_NAME = "MoreWords"
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///morewords.db',
-                       connect_args={'check_same_thread': False})
+# TODO: modify port number!
+engine = create_engine('postgresql+psycopg2://vagrant:wlapaella@localhost:5432/morewords')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
