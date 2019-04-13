@@ -7,7 +7,8 @@ This responsive app is a personal vocabulary that lets users add languages, word
 Not registered users will see all languages and words present in the app, but they won't be able to create, edit or delete any of them.  
 A user can signup and signin with Google, Facebook or directly in the app and create, edit, delete and review his/her own words.  
 Once a word has been learned the user can check the 'learned' checkbox in the word detail page and the word will be no longer displayed in the review.  
-This app also has an API that lets developers query the database. See [MoreWords API](#MoreWords-API).
+This app also has an API that lets developers query the database. See [MoreWords API](#MoreWords-API).  
+You can use the deployed app [here](http://35.180.129.17.xip.io/vocabulary/).
 
 ## Project Contents
 
